@@ -32,6 +32,10 @@ export const PlayPauseButton = MKButton.accentColoredButton()
   .withStyle(styles.playPauseButton)
   .build();
 
+export const SleepButton = MKButton.coloredButton()
+  .withText('一键睡眠')
+  .build();
+
 export const ShutdownButton = MKButton.accentColoredButton()
   .withText('关机')
   .build();

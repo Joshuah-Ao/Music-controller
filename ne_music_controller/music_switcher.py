@@ -21,9 +21,14 @@ VK_UP = 0x26        # 方向上键 (音量加)
 VK_RIGHT = 0x27     # 方向右键 (下一首)
 VK_DOWN = 0x28      # 方向下键 (音量减)
 VK_P = 0x50         # P 键 (播放/暂停)
+VK_LWIN = 0x5B      # Win 键 (左徽标键)
+VK_SPACE = 0x20     # 空格键 (用于切换英文输入法)
+VK_X = 0x58         # X 键
+VK_U = 0x55         # U 键
+VK_S = 0x53         # S 键
 
-# 方向键需设置 EXTENDEDKEY 标志
-EXTENDED_KEYS = {VK_LEFT, VK_UP, VK_RIGHT, VK_DOWN}
+# 需设置 EXTENDEDKEY 标志的扩展键
+EXTENDED_KEYS = {VK_LEFT, VK_UP, VK_RIGHT, VK_DOWN, VK_LWIN}
 
 
 class MusicBox(object):
@@ -74,6 +79,25 @@ class MusicBox(object):
     def volume_down(cls):
         print("[操作] 音量减 -> 模拟按键: Ctrl + Alt + Down", flush=True)
         cls._press_keys((VK_CONTROL, VK_MENU, VK_DOWN))
+
+    @classmethod
+    def sleep(cls):
+        """一键让电脑进入睡眠：先 Win+Space 切英文输入法，再 Win+X -> U -> S"""
+        print("[操作] 收到一键睡眠指令：先切英文状态，再通过 Win+X > U > S 睡眠...", flush=True)
+        # 1. 先 Win + Space 切换英文输入状态，避免中文输入法拦截快捷键
+        cls._press_keys((VK_LWIN, VK_SPACE))
+        time.sleep(0.3)
+
+        # 2. 按下 Win + X 唤出系统管理菜单
+        cls._press_keys((VK_LWIN, VK_X))
+        time.sleep(0.4)
+
+        # 3. 按下 U 展开关机与睡眠子菜单
+        cls._press_keys((VK_U,))
+        time.sleep(0.3)
+
+        # 4. 按下 S 触发系统睡眠
+        cls._press_keys((VK_S,))
 
     @classmethod
     def shutdown(cls):

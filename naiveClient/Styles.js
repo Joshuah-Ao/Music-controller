@@ -3,72 +3,115 @@
 var React = require('react-native');
 var {
   StyleSheet,
-  } = React;
+} = React;
 
 export const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+    backgroundColor: '#0F172A',
   },
   container: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
-    padding: 20,
+    backgroundColor: '#0F172A',
+    padding: 24,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 16,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   row: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textLine: {
-  	flexDirection: 'row',
+    fontSize: 13,
+    color: '#94A3B8',
+    marginVertical: 3,
   },
   col: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    marginLeft: 7, marginRight: 7,
+    marginHorizontal: 8,
   },
   colNoAlign: {
     flex: 1,
     flexDirection: 'column',
-    marginLeft: 7, marginRight: 7,
+    marginHorizontal: 8,
   },
   welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#F8FAFC',
+    letterSpacing: 0.5,
+  },
+  connectedBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+  },
+  connectedText: {
+    color: '#34D399',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   controllerButton: {
     flex: 1,
-    marginHorizontal: 20,
-    width: 120,
-  },
-  fab: {
-    // width: 200,
-    // height: 200,
-    // borderRadius: 100,
-  },
-  textfieldWithFloatingLabel: {
-    height: 38,
-  },
-  buttonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'white',
+    height: 52,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
   },
   playPauseButton: {
     flex: 1,
-    marginHorizontal: 20,
-    width: 240,
-    height: 50,
+    height: 64,
+    borderRadius: 18,
+    marginHorizontal: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 6,
   },
-  connectedMarker: {
-    color: 'green',
-    fontSize: 20,
+  textfieldWithFloatingLabel: {
+    height: 48,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  playButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  card: {
+    backgroundColor: 'rgba(30, 41, 59, 0.7)',
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#E2E8F0',
+    marginBottom: 8,
+  },
+  footerText: {
+    color: '#64748B',
+    fontSize: 12,
     textAlign: 'center',
-    margin: 10,
-  },
-  shutdownButton: {
-    width: 100,
+    marginTop: 20,
   }
 });
