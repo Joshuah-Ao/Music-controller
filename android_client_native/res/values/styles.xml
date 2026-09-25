@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 全屏沉浸式无标题栏深色主题 -->
+    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowBackground">@color/bg_main</item>
+        <item name="android:statusBarColor">#0B0F17</item>
+        <item name="android:navigationBarColor">#0B0F17</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+    </style>
+</resources>

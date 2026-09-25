@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 顶部标题与连接状态栏 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/tv_status_badge"
+                android:layout_toStartOf="@+id/tv_status_badge">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/header_subtitle"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_badge_disconnected"
+                android:text="@string/status_disconnected"
+                android:textColor="@color/badge_offline_text"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- 服务器连接输入卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/et_server_ip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:hint="@string/hint_ip"
+                android:textColorHint="#64748B"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:inputType="textUri"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_btn_connect"
+                android:text="@string/btn_connect"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 切歌控制：上一首 / 下一首 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/btn_prev"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="@string/btn_prev"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="@string/btn_next"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 播放 / 暂停 大按键 (视觉焦点) -->
+        <Button
+            android:id="@+id/btn_play_pause"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:background="@drawable/bg_btn_play"
+            android:text="@string/btn_play_pause"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 音量控制：音量 - / 音量 + -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/btn_vol_down"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="@string/btn_vol_down"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_vol_up"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="@string/btn_vol_up"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 系统控制：一键睡眠 / 安全关机 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btn_sleep"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_btn_sleep"
+                android:text="@string/btn_sleep"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_shutdown"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_btn_danger"
+                android:text="@string/btn_shutdown"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 详细信息卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_title"
+                android:textColor="@color/text_accent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_info_connection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="运行状态: 等待连接电脑..."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_info_platform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="控制目标: Windows 电脑 (网易云/QQ音乐/PPT)"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_info_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提示: 手机与电脑需连接在同一局域网 WiFi"
+                android:textColor="#64748B"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="极速轻量原生版 · 绝无闪退 · 全架构兼容"
+            android:textColor="#475569"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+</ScrollView>
