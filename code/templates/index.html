@@ -55,7 +55,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 20px 24px;
+      padding: 18px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -63,7 +63,7 @@
     }
 
     .title-area h1 {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 700;
       letter-spacing: -0.5px;
       background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
@@ -112,10 +112,10 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 28px;
-      padding: 28px 20px;
+      padding: 26px 20px 22px 20px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 22px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
     }
 
@@ -135,7 +135,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
     }
@@ -159,30 +159,97 @@
     }
 
     .btn-step svg {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       fill: currentColor;
     }
 
-    /* 播放/暂停核心主按钮 */
+    /* 播放/暂停核心主按钮 (默认暂停样式：冷静深蓝靛青) */
     .btn-play-pause {
       width: 86px;
       height: 86px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      border-radius: 30px;
+      background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
       color: #ffffff;
-      box-shadow: 0 10px 25px var(--primary-glow);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-play-pause:hover {
-      box-shadow: 0 14px 30px var(--primary-glow);
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-play-pause svg {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       fill: currentColor;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* 播放中状态高亮与脉冲动效：极光紫粉渐变 + 强烈光晕 */
+    .btn-play-pause.playing {
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      box-shadow: 0 0 35px rgba(236, 72, 153, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      animation: playPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes playPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.6); transform: scale(1); }
+      50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.9); transform: scale(1.04); }
+    }
+
+    /* 状态律动波纹条 */
+    .status-bar-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .wave-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+    }
+
+    .wave-bar {
+      width: 3px;
+      height: 4px;
+      background: #818cf8;
+      border-radius: 2px;
+      transition: height 0.2s ease, background 0.3s ease;
+    }
+
+    .playing .wave-bar {
+      background: #ec4899;
+    }
+
+    .playing .wave-bar:nth-child(1) {
+      animation: wave 1s infinite ease-in-out 0.1s;
+    }
+    .playing .wave-bar:nth-child(2) {
+      animation: wave 1s infinite ease-in-out 0.3s;
+    }
+    .playing .wave-bar:nth-child(3) {
+      animation: wave 1s infinite ease-in-out 0.2s;
+    }
+
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .status-bar-container.playing .status-text {
+      color: #f472b6;
+      font-weight: 600;
     }
 
     /* 音量与功能按键格 */
@@ -193,7 +260,7 @@
     }
 
     .btn-action {
-      height: 60px;
+      height: 58px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -298,7 +365,7 @@
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -370,8 +437,8 @@
     <!-- 顶部卡片 -->
     <div class="header-card">
       <div class="title-area">
-        <h1>音乐遥控器</h1>
-        <p>PC 局域网媒体控制器</p>
+        <h1>多媒体遥控器</h1>
+        <p>PC 局域网无线控制器</p>
       </div>
       <div class="status-badge">
         <span class="status-dot"></span>
@@ -384,29 +451,42 @@
       <!-- 核心切歌与播放控制 -->
       <div class="playback-row">
         <!-- 上一首 -->
-        <button class="btn btn-step" onclick="sendAction('prev_song', '上一首')">
+        <button class="btn btn-step" onclick="handleStepSong('prev_song', '⏮ 上一首')">
           <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
 
-        <!-- 播放/暂停 -->
-        <button class="btn btn-play-pause" onclick="sendAction('pause_play', '播放 / 暂停')">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <!-- 播放 / 暂停 (核心大按钮：点击动态切换播放/暂停图标与律动) -->
+        <button id="btnPlayPause" class="btn btn-play-pause" onclick="togglePlayPause()" title="点击切换播放/暂停">
+          <!-- 播放图标 (三角形：未播放时显示) -->
+          <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <!-- 暂停图标 (双竖条：播放中时显示) -->
+          <svg id="iconPause" style="display:none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
 
         <!-- 下一首 -->
-        <button class="btn btn-step" onclick="sendAction('next_song', '下一首')">
+        <button class="btn btn-step" onclick="handleStepSong('next_song', '⏭ 下一首')">
           <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
       </div>
 
+      <!-- 实时状态与律动指示条 -->
+      <div id="statusIndicatorArea" class="status-bar-container">
+        <div class="wave-bars">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+        <span id="playStatusText" class="status-text">已暂停，点击中央按钮播放</span>
+      </div>
+
       <!-- 音量控制 -->
       <div class="control-grid">
-        <button class="btn btn-action" onclick="sendAction('volume_down', '音量 -')">
+        <button class="btn btn-action" onclick="sendAction('volume_down', '🔉 音量 -')">
           <svg viewBox="0 0 24 24"><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/></svg>
           <span>音量 -</span>
         </button>
 
-        <button class="btn btn-action" onclick="sendAction('volume_up', '音量 +')">
+        <button class="btn btn-action" onclick="sendAction('volume_up', '🔊 音量 +')">
           <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
           <span>音量 +</span>
         </button>
@@ -449,12 +529,50 @@
 
   <script>
     let toastTimer = null;
+    let isPlaying = false; // 客户端维护的播放状态
+
+    // 切换播放/暂停状态及图标
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      updatePlayPauseUI();
+      sendAction('pause_play', isPlaying ? '▶ 正在播放' : '⏸ 已暂停播放');
+    }
+
+    // 更新播放按钮图标与状态动画
+    function updatePlayPauseUI() {
+      const btn = document.getElementById('btnPlayPause');
+      const iconPlay = document.getElementById('iconPlay');
+      const iconPause = document.getElementById('iconPause');
+      const indicatorArea = document.getElementById('statusIndicatorArea');
+      const statusText = document.getElementById('playStatusText');
+
+      if (isPlaying) {
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+        btn.classList.add('playing');
+        indicatorArea.classList.add('playing');
+        statusText.innerText = '🎵 正在播放中... 点击可暂停';
+      } else {
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+        btn.classList.remove('playing');
+        indicatorArea.classList.remove('playing');
+        statusText.innerText = '⏸ 已暂停，点击中央播放';
+      }
+    }
+
+    // 点击上一首/下一首切歌时，自动同步为播放中状态
+    function handleStepSong(action, label) {
+      isPlaying = true;
+      updatePlayPauseUI();
+      sendAction(action, label);
+    }
 
     // 异步无刷新发送指令
     function sendAction(actionName, label) {
       showToast(label || '指令已发送');
       
-      // 轻量震动触感反馈（支持的设备）
+      // 轻量震动触感反馈
       if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(30);
       }
