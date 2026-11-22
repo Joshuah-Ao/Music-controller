@@ -30,6 +30,10 @@ class MusicBox(object):
         cls._press_keys(['Control', 'Command', 'P'])
 
     @classmethod
+    def like_song(cls):
+        cls._press_keys(['Control', 'Command', 'L'])
+
+    @classmethod
     def volume_up(cls):
         # 按需修改
         # cls._press_keys((MOD_CONTROL, K_F6))

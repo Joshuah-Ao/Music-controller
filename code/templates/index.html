@@ -7,11 +7,13 @@
   <style>
     :root {
       --bg-gradient: radial-gradient(circle at 50% 10%, #1e1b4b 0%, #0f172a 50%, #030712 100%);
-      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-bg: rgba(30, 41, 59, 0.72);
       --card-border: rgba(255, 255, 255, 0.1);
       --primary-color: #6366f1;
       --primary-glow: rgba(99, 102, 241, 0.4);
       --accent-color: #8b5cf6;
+      --like-color: #f43f5e;
+      --like-glow: rgba(244, 63, 94, 0.35);
       --sleep-color: #7c3aed;
       --sleep-glow: rgba(124, 58, 237, 0.35);
       --danger-color: #ef4444;
@@ -37,7 +39,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 16px;
+      padding: 18px 16px;
     }
 
     .app-container {
@@ -45,7 +47,7 @@
       max-width: 420px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     /* 顶部标题与状态卡片 */
@@ -55,7 +57,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 18px 22px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -88,6 +90,13 @@
       font-size: 12px;
       color: #34d399;
       font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .status-badge.offline {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
     }
 
     .status-dot {
@@ -97,6 +106,12 @@
       background: #10b981;
       box-shadow: 0 0 10px #10b981;
       animation: pulse 2s infinite;
+    }
+
+    .status-badge.offline .status-dot {
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+      animation: none;
     }
 
     @keyframes pulse {
@@ -112,11 +127,216 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 28px;
-      padding: 26px 20px 22px 20px;
+      padding: 22px 20px 20px 20px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 正在播放信息区 */
+    .now-playing {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .track-meta {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .track-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .track-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 12px;
+      color: var(--text-sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app-chip {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.18);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      max-width: 108px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 状态律动波纹条 */
+    .wave-bars {
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+    }
+
+    .wave-bar {
+      width: 3px;
+      height: 4px;
+      background: #818cf8;
+      border-radius: 2px;
+      transition: height 0.2s ease, background 0.3s ease;
+    }
+
+    .playing .wave-bar {
+      background: #ec4899;
+    }
+
+    .playing .wave-bar:nth-child(1) {
+      animation: wave 1s infinite ease-in-out 0.1s;
+    }
+    .playing .wave-bar:nth-child(2) {
+      animation: wave 1s infinite ease-in-out 0.3s;
+    }
+    .playing .wave-bar:nth-child(3) {
+      animation: wave 1s infinite ease-in-out 0.2s;
+    }
+
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+
+    /* 播放进度条区域 */
+    .progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .progress-slider-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 24px;
+    }
+
+    .progress-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      outline: none;
+      cursor: pointer;
+      transition: opacity 0.25s ease;
+    }
+
+    .progress-slider:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .progress-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #ec4899;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.75);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .progress-slider:active::-webkit-slider-thumb {
+      transform: scale(1.22);
+    }
+
+    .progress-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #ec4899;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.75);
+      cursor: pointer;
+    }
+
+    .progress-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .time-label {
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-sub);
+      font-weight: 600;
+      min-width: 44px;
+    }
+
+    .time-label.right {
+      text-align: right;
+    }
+
+    .seek-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-seek-pill {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .btn-seek-pill:active {
+      transform: scale(0.92);
+      background: rgba(139, 92, 246, 0.35);
+      border-color: rgba(167, 139, 250, 0.5);
+      color: #ffffff;
+    }
+
+    .timeline-hint {
+      text-align: center;
+      font-size: 11px;
+      color: #64748b;
+      margin-top: -4px;
+      min-height: 15px;
     }
 
     /* 播放控制按钮行 */
@@ -164,11 +384,11 @@
       fill: currentColor;
     }
 
-    /* 播放/暂停核心主按钮 (默认暂停样式：冷静深蓝靛青) */
+    /* 播放/暂停核心主按钮 */
     .btn-play-pause {
-      width: 86px;
-      height: 86px;
-      border-radius: 30px;
+      width: 84px;
+      height: 84px;
+      border-radius: 28px;
       background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
       color: #ffffff;
       box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
@@ -184,7 +404,7 @@
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    /* 播放中状态高亮与脉冲动效：极光紫粉渐变 + 强烈光晕 */
+    /* 播放中状态高亮与脉冲动效 */
     .btn-play-pause.playing {
       background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
       box-shadow: 0 0 35px rgba(236, 72, 153, 0.7);
@@ -197,70 +417,15 @@
       50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.9); transform: scale(1.04); }
     }
 
-    /* 状态律动波纹条 */
-    .status-bar-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding-top: 4px;
-    }
-
-    .wave-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 14px;
-    }
-
-    .wave-bar {
-      width: 3px;
-      height: 4px;
-      background: #818cf8;
-      border-radius: 2px;
-      transition: height 0.2s ease, background 0.3s ease;
-    }
-
-    .playing .wave-bar {
-      background: #ec4899;
-    }
-
-    .playing .wave-bar:nth-child(1) {
-      animation: wave 1s infinite ease-in-out 0.1s;
-    }
-    .playing .wave-bar:nth-child(2) {
-      animation: wave 1s infinite ease-in-out 0.3s;
-    }
-    .playing .wave-bar:nth-child(3) {
-      animation: wave 1s infinite ease-in-out 0.2s;
-    }
-
-    @keyframes wave {
-      0%, 100% { height: 4px; }
-      50% { height: 14px; }
-    }
-
-    .status-text {
-      font-size: 13px;
-      color: var(--text-sub);
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .status-bar-container.playing .status-text {
-      color: #f472b6;
-      font-weight: 600;
-    }
-
-    /* 音量与功能按键格 */
-    .control-grid {
+    /* 音量与喜欢三键格 */
+    .control-grid-3 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
     }
 
     .btn-action {
-      height: 58px;
+      height: 56px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -269,8 +434,8 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      font-size: 15px;
+      gap: 7px;
+      font-size: 14px;
       font-weight: 600;
     }
 
@@ -279,10 +444,41 @@
     }
 
     .btn-action svg {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       fill: currentColor;
-      opacity: 0.9;
+      opacity: 0.92;
+      flex-shrink: 0;
+    }
+
+    /* 喜欢红心按钮 */
+    .btn-like {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.16) 0%, rgba(236, 72, 153, 0.12) 100%);
+      border: 1px solid rgba(244, 63, 94, 0.36);
+      color: #fda4af;
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.22);
+    }
+
+    .btn-like:hover {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.26) 0%, rgba(236, 72, 153, 0.2) 100%);
+    }
+
+    .btn-like.liked {
+      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #ffffff;
+      box-shadow: 0 6px 22px rgba(244, 63, 94, 0.55);
+    }
+
+    .btn-like.heart-pop svg {
+      animation: heartBeat 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.3);
+    }
+
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.42); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
     }
 
     /* 电源管理区卡片 */
@@ -292,7 +488,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -301,7 +497,7 @@
 
     /* 一键睡眠专用样式 */
     .btn-sleep {
-      height: 52px;
+      height: 50px;
       border-radius: 16px;
       background: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(99, 102, 241, 0.2) 100%);
       border: 1px solid rgba(139, 92, 246, 0.4);
@@ -318,7 +514,7 @@
 
     /* 安全关机专用样式 */
     .btn-shutdown {
-      height: 52px;
+      height: 50px;
       border-radius: 16px;
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%);
       border: 1px solid rgba(239, 68, 68, 0.35);
@@ -336,15 +532,15 @@
     /* 浮动提示 Toast */
     .toast {
       position: fixed;
-      bottom: 30px;
+      bottom: 28px;
       left: 50%;
       transform: translateX(-50%) translateY(50px);
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       color: #ffffff;
       padding: 10px 20px;
       border-radius: 20px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       opacity: 0;
@@ -354,6 +550,8 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      max-width: 90vw;
+      white-space: nowrap;
     }
 
     .toast.show {
@@ -438,70 +636,95 @@
     <div class="header-card">
       <div class="title-area">
         <h1>多媒体遥控器</h1>
-        <p>PC 局域网无线控制器</p>
+        <p>PC 局域网无线控制器 · v1.3</p>
       </div>
-      <div class="status-badge">
+      <div id="connBadge" class="status-badge">
         <span class="status-dot"></span>
-        <span>已连接</span>
+        <span id="connBadgeText">已连接</span>
       </div>
     </div>
 
     <!-- 主控面板 -->
     <div class="player-card">
-      <!-- 核心切歌与播放控制 -->
-      <div class="playback-row">
-        <!-- 上一首 -->
-        <button class="btn btn-step" onclick="handleStepSong('prev_song', '⏮ 上一首')">
-          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-        </button>
 
-        <!-- 播放 / 暂停 (核心大按钮：点击动态切换播放/暂停图标与律动) -->
-        <button id="btnPlayPause" class="btn btn-play-pause" onclick="togglePlayPause()" title="点击切换播放/暂停">
-          <!-- 播放图标 (三角形：未播放时显示) -->
-          <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          <!-- 暂停图标 (双竖条：播放中时显示) -->
-          <svg id="iconPause" style="display:none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-
-        <!-- 下一首 -->
-        <button class="btn btn-step" onclick="handleStepSong('next_song', '⏭ 下一首')">
-          <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-        </button>
-      </div>
-
-      <!-- 实时状态与律动指示条 -->
-      <div id="statusIndicatorArea" class="status-bar-container">
+      <!-- 实时曲目信息卡片 -->
+      <div id="statusIndicatorArea" class="now-playing">
         <div class="wave-bars">
           <div class="wave-bar"></div>
           <div class="wave-bar"></div>
           <div class="wave-bar"></div>
         </div>
-        <span id="playStatusText" class="status-text">已暂停，点击中央按钮播放</span>
+        <div class="track-meta">
+          <div class="track-title-row">
+            <span id="songTitle" class="track-title">等待同步播放信息</span>
+          </div>
+          <span id="songArtist" class="track-artist">点击下方按钮控制电脑播放器</span>
+        </div>
+        <span id="appChip" class="app-chip">PC 媒体</span>
       </div>
 
-      <!-- 音量控制 -->
-      <div class="control-grid">
-        <button class="btn btn-action" onclick="sendAction('volume_down', '🔉 音量 -')">
+      <!-- 播放进度条与快进快退控制 -->
+      <div class="progress-section">
+        <div class="progress-slider-wrap">
+          <input id="progressSlider" class="progress-slider" type="range" min="0" max="1000" value="0" step="1" disabled aria-label="播放进度条">
+        </div>
+        <div class="progress-meta-row">
+          <span id="timeCurrent" class="time-label">--:--</span>
+          <div class="seek-pills">
+            <button class="btn-seek-pill" onclick="seekDelta(-10)" title="快退 10 秒">↺ 10s</button>
+            <button class="btn-seek-pill" onclick="seekDelta(10)" title="快进 10 秒">10s ↻</button>
+          </div>
+          <span id="timeTotal" class="time-label right">--:--</span>
+        </div>
+        <div id="timelineHint" class="timeline-hint">正在读取电脑播放进度...</div>
+      </div>
+
+      <!-- 核心切歌与播放控制 -->
+      <div class="playback-row">
+        <!-- 上一首 -->
+        <button class="btn btn-step" onclick="handleStepSong('prev_song', '⏮ 上一首')" title="上一首 (Ctrl+Alt+Left)">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+
+        <!-- 播放 / 暂停 -->
+        <button id="btnPlayPause" class="btn btn-play-pause" onclick="togglePlayPause()" title="播放/暂停 (Ctrl+Alt+P)">
+          <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="iconPause" style="display:none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+
+        <!-- 下一首 -->
+        <button class="btn btn-step" onclick="handleStepSong('next_song', '⏭ 下一首')" title="下一首 (Ctrl+Alt+Right)">
+          <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+
+      <!-- 音量与喜欢控制 -->
+      <div class="control-grid-3">
+        <button class="btn btn-action" onclick="sendAction('volume_down', '🔉 音量 -')" title="音量减 (Ctrl+Alt+Down)">
           <svg viewBox="0 0 24 24"><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/></svg>
           <span>音量 -</span>
         </button>
 
-        <button class="btn btn-action" onclick="sendAction('volume_up', '🔊 音量 +')">
+        <button id="btnLike" class="btn btn-action btn-like" title="喜欢/取消喜欢 (Ctrl+Alt+L，已喜欢时点击二次确认，长按仅同步状态)">
+          <svg id="iconHeartOutline" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+          <svg id="iconHeartFilled" style="display:none;" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span id="likeBtnText">喜欢</span>
+        </button>
+
+        <button class="btn btn-action" onclick="sendAction('volume_up', '🔊 音量 +')" title="音量加 (Ctrl+Alt+Up)">
           <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
           <span>音量 +</span>
         </button>
       </div>
     </div>
 
-    <!-- 底部电源管理区 (防误触设计) -->
+    <!-- 底部电源管理区 -->
     <div class="power-card">
-      <!-- 一键睡眠 -->
       <button class="btn btn-sleep btn-action" onclick="sendAction('sleep', '🌙 电脑正在进入睡眠...')">
         <svg viewBox="0 0 24 24" style="fill:currentColor; width:20px; height:20px;"><path d="M12.3 2a10 10 0 0 0-1.9 20 10 10 0 0 0 8.6-4.9 1 1 0 0 0-1-1.4 8 8 0 1 1-7.1-12.3 1 1 0 0 0 1.4-1.4z"/></svg>
         <span>一键睡眠</span>
       </button>
 
-      <!-- 安全关机 (带确认弹窗) -->
       <button class="btn btn-shutdown btn-action" onclick="openShutdownModal()">
         <svg viewBox="0 0 24 24" style="fill:currentColor; width:20px; height:20px;"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.92 6.92 0 0 1 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.38 1.19-4.47 3-5.74L6.58 4.84A8.94 8.94 0 0 0 3 12a9 9 0 0 0 18 0c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
         <span>安全关机</span>
@@ -515,8 +738,20 @@
     <span id="toast-text">已发送指令</span>
   </div>
 
+  <!-- 取消喜欢二次确认弹窗 -->
+  <div id="unlikeModal" class="modal-overlay" onclick="if (event.target === this) closeUnlikeModal()">
+    <div class="modal-box">
+      <h3>确认取消喜欢？</h3>
+      <p id="unlikeModalDesc">当前歌曲已标记为喜欢，确认发送 Ctrl + Alt + L 取消喜欢吗？</p>
+      <div class="modal-actions">
+        <button class="modal-btn btn-cancel" onclick="closeUnlikeModal()">取消</button>
+        <button class="modal-btn btn-confirm-danger" onclick="confirmUnlike()">确定取消喜欢</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 关机确认弹窗 -->
-  <div id="shutdownModal" class="modal-overlay">
+  <div id="shutdownModal" class="modal-overlay" onclick="if (event.target === this) closeShutdownModal()">
     <div class="modal-box">
       <h3>确认关闭电脑？</h3>
       <p>执行后电脑将在 5 秒内自动保存并安全切断电源。</p>
@@ -529,61 +764,487 @@
 
   <script>
     let toastTimer = null;
-    let isPlaying = false; // 客户端维护的播放状态
+    let isPlaying = false;
+    let isLiked = false;
+    let currentTrackTitle = '';
+    let hasTimeline = false;
+    let durationSec = 0;
+    let positionSec = 0;
+    let playbackRate = 1.0;
+    let lastSyncMs = 0;
+    let isSeeking = false;
+    let ignorePlayStateUntil = 0;
+    let ignoreLikeStateUntil = 0;
+    let ignorePositionUntil = 0;
+    let pollInFlight = false;
+    let likeLongPressTimer = null;
+    let likeLongPressTriggered = false;
+
+    const sliderEl = document.getElementById('progressSlider');
+    const timeCurrentEl = document.getElementById('timeCurrent');
+    const timeTotalEl = document.getElementById('timeTotal');
+    const timelineHintEl = document.getElementById('timelineHint');
+    const songTitleEl = document.getElementById('songTitle');
+    const songArtistEl = document.getElementById('songArtist');
+    const appChipEl = document.getElementById('appChip');
+    const connBadgeEl = document.getElementById('connBadge');
+    const connBadgeTextEl = document.getElementById('connBadgeText');
+
+    function formatTime(sec) {
+      if (!isFinite(sec) || sec < 0) return '00:00';
+      const total = Math.floor(sec);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      const pad = n => (n < 10 ? '0' + n : '' + n);
+      return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+    }
+
+    function updateSliderVisual(pos, dur) {
+      if (dur > 0.5) {
+        const clamped = Math.max(0, Math.min(dur, pos));
+        const ratio = clamped / dur;
+        const pct = (ratio * 100).toFixed(2);
+        sliderEl.disabled = false;
+        sliderEl.value = Math.round(ratio * 1000);
+        sliderEl.style.background = `linear-gradient(90deg, #8b5cf6 0%, #ec4899 ${pct}%, rgba(255,255,255,0.14) ${pct}%)`;
+        timeCurrentEl.innerText = formatTime(clamped);
+        timeTotalEl.innerText = formatTime(dur);
+      } else {
+        sliderEl.disabled = true;
+        sliderEl.value = 0;
+        sliderEl.style.background = 'rgba(255,255,255,0.14)';
+        timeCurrentEl.innerText = '--:--';
+        timeTotalEl.innerText = '--:--';
+      }
+    }
+
+    function getLivePosition() {
+      let pos = positionSec;
+      if (isPlaying && hasTimeline && durationSec > 0.5 && lastSyncMs > 0) {
+        const dt = (Date.now() - lastSyncMs) / 1000;
+        if (dt > 0) {
+          pos += dt * (playbackRate || 1.0);
+        }
+      }
+      if (durationSec > 0.5) {
+        pos = Math.max(0, Math.min(durationSec, pos));
+      }
+      return pos;
+    }
+
+    function setConnectionOnline(online) {
+      if (online) {
+        connBadgeEl.classList.remove('offline');
+        connBadgeTextEl.innerText = '已连接';
+      } else {
+        connBadgeEl.classList.add('offline');
+        connBadgeTextEl.innerText = '已断开';
+      }
+    }
 
     // 切换播放/暂停状态及图标
     function togglePlayPause() {
       isPlaying = !isPlaying;
+      ignorePlayStateUntil = Date.now() + 1500;
+      positionSec = getLivePosition();
+      lastSyncMs = Date.now();
       updatePlayPauseUI();
-      sendAction('pause_play', isPlaying ? '▶ 正在播放' : '⏸ 已暂停播放');
+      sendAction('pause_play', isPlaying ? '▶ 正在播放' : '⏸ 已暂停播放', true);
     }
 
-    // 更新播放按钮图标与状态动画
     function updatePlayPauseUI() {
       const btn = document.getElementById('btnPlayPause');
       const iconPlay = document.getElementById('iconPlay');
       const iconPause = document.getElementById('iconPause');
       const indicatorArea = document.getElementById('statusIndicatorArea');
-      const statusText = document.getElementById('playStatusText');
 
       if (isPlaying) {
         iconPlay.style.display = 'none';
         iconPause.style.display = 'block';
         btn.classList.add('playing');
         indicatorArea.classList.add('playing');
-        statusText.innerText = '🎵 正在播放中... 点击可暂停';
       } else {
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
         btn.classList.remove('playing');
         indicatorArea.classList.remove('playing');
-        statusText.innerText = '⏸ 已暂停，点击中央播放';
       }
     }
 
-    // 点击上一首/下一首切歌时，自动同步为播放中状态
     function handleStepSong(action, label) {
       isPlaying = true;
+      ignorePlayStateUntil = Date.now() + 1500;
       updatePlayPauseUI();
-      sendAction(action, label);
+      sendAction(action, label, true);
+    }
+
+    function updateLikeUI() {
+      const btn = document.getElementById('btnLike');
+      const iconOutline = document.getElementById('iconHeartOutline');
+      const iconFilled = document.getElementById('iconHeartFilled');
+      const textEl = document.getElementById('likeBtnText');
+
+      if (isLiked) {
+        btn.classList.add('liked');
+        iconOutline.style.display = 'none';
+        iconFilled.style.display = 'block';
+        textEl.innerText = '已喜欢';
+      } else {
+        btn.classList.remove('liked');
+        iconOutline.style.display = 'block';
+        iconFilled.style.display = 'none';
+        textEl.innerText = '喜欢';
+      }
+    }
+
+    function playHeartPop() {
+      const btn = document.getElementById('btnLike');
+      btn.classList.remove('heart-pop');
+      void btn.offsetWidth;
+      btn.classList.add('heart-pop');
+    }
+
+    function likeSong() {
+      if (isLiked) {
+        vibrate();
+        openUnlikeModal();
+        return;
+      }
+      isLiked = true;
+      ignoreLikeStateUntil = Date.now() + 1500;
+      updateLikeUI();
+      playHeartPop();
+      sendAction('like_song', '❤️ 已喜欢当前歌曲 (Ctrl+Alt+L)', true);
+    }
+
+    function openUnlikeModal() {
+      const desc = document.getElementById('unlikeModalDesc');
+      if (currentTrackTitle) {
+        desc.innerText = `确认取消喜欢《${currentTrackTitle}》吗？将向电脑发送 Ctrl + Alt + L。`;
+      } else {
+        desc.innerText = '当前歌曲已标记为喜欢，确认发送 Ctrl + Alt + L 取消喜欢吗？';
+      }
+      document.getElementById('unlikeModal').style.display = 'flex';
+    }
+
+    function closeUnlikeModal() {
+      document.getElementById('unlikeModal').style.display = 'none';
+    }
+
+    function confirmUnlike() {
+      closeUnlikeModal();
+      isLiked = false;
+      ignoreLikeStateUntil = Date.now() + 1500;
+      updateLikeUI();
+      sendAction('unlike_song', '💔 已取消喜欢 (Ctrl+Alt+L)', true);
+    }
+
+    function syncLikeStateOnly() {
+      const nextState = !isLiked;
+      isLiked = nextState;
+      ignoreLikeStateUntil = Date.now() + 1500;
+      updateLikeUI();
+      vibrate();
+      fetch('/like_state?liked=' + (nextState ? '1' : '0'), {
+        method: 'GET',
+        cache: 'no-store'
+      })
+        .then(() => {
+          showToast(nextState ? '❤️ 已仅同步为“已喜欢”（再次点击将二次确认）' : '🤍 已重置喜欢标记（未发快捷键）');
+        })
+        .catch(() => {
+          showToast('同步状态失败，请检查电脑是否在线');
+        });
+    }
+
+    // 绑定喜欢按钮短按与长按（长按仅同步标记，适配电脑原本已红心的歌曲）
+    (function bindLikeButton() {
+      const btnLikeEl = document.getElementById('btnLike');
+      const startPress = () => {
+        likeLongPressTriggered = false;
+        clearTimeout(likeLongPressTimer);
+        likeLongPressTimer = setTimeout(() => {
+          likeLongPressTriggered = true;
+          syncLikeStateOnly();
+        }, 650);
+      };
+      const cancelPress = () => {
+        clearTimeout(likeLongPressTimer);
+      };
+      btnLikeEl.addEventListener('pointerdown', startPress);
+      btnLikeEl.addEventListener('pointerup', cancelPress);
+      btnLikeEl.addEventListener('pointerleave', cancelPress);
+      btnLikeEl.addEventListener('pointercancel', cancelPress);
+      btnLikeEl.addEventListener('contextmenu', e => e.preventDefault());
+      btnLikeEl.addEventListener('click', e => {
+        if (likeLongPressTriggered) {
+          likeLongPressTriggered = false;
+          e.preventDefault();
+          return;
+        }
+        likeSong();
+      });
+    })();
+
+    function vibrate() {
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(28);
+      }
     }
 
     // 异步无刷新发送指令
-    function sendAction(actionName, label) {
-      showToast(label || '指令已发送');
-      
-      // 轻量震动触感反馈
-      if (window.navigator && window.navigator.vibrate) {
-        window.navigator.vibrate(30);
+    function sendAction(actionName, label, refreshAfter) {
+      if (label) showToast(label);
+      vibrate();
+
+      fetch('/?action=' + encodeURIComponent(actionName) + '&format=json', {
+        method: 'GET',
+        cache: 'no-store'
+      })
+        .then(res => {
+          setConnectionOnline(res.ok);
+          if (refreshAfter) {
+            setTimeout(() => pollMediaStatus(true), 380);
+          }
+        })
+        .catch(() => {
+          setConnectionOnline(false);
+          showToast('连接失败，请检查电脑是否在线');
+        });
+    }
+
+    // 绝对进度跳转
+    function commitSeek(targetSec) {
+      if (!hasTimeline || durationSec <= 0.5) return;
+      const clamped = Math.max(0, Math.min(durationSec, targetSec));
+      positionSec = clamped;
+      lastSyncMs = Date.now();
+      ignorePositionUntil = Date.now() + 1500;
+      updateSliderVisual(clamped, durationSec);
+      vibrate();
+
+      fetch('/media_seek?position=' + encodeURIComponent(clamped.toFixed(2)), {
+        method: 'GET',
+        cache: 'no-store'
+      })
+        .then(res => res.json())
+        .then(data => {
+          setConnectionOnline(true);
+          if (data.ok) {
+            showToast('⏩ ' + (data.message || ('已跳转至 ' + formatTime(clamped))));
+            if (typeof data.position === 'number') {
+              positionSec = data.position;
+              lastSyncMs = Date.now();
+            }
+          } else {
+            showToast(data.message || '当前播放器暂不支持拖动进度条');
+            ignorePositionUntil = 0;
+            pollMediaStatus(true);
+          }
+        })
+        .catch(() => {
+          setConnectionOnline(false);
+          showToast('连接失败，请检查电脑是否在线');
+        });
+    }
+
+    // 相对快退 / 快进
+    function seekDelta(deltaSec) {
+      vibrate();
+      if (hasTimeline && durationSec > 0.5) {
+        const target = Math.max(0, Math.min(durationSec, getLivePosition() + deltaSec));
+        positionSec = target;
+        lastSyncMs = Date.now();
+        ignorePositionUntil = Date.now() + 1500;
+        updateSliderVisual(target, durationSec);
       }
 
-      fetch('?action=' + encodeURIComponent(actionName), {
+      fetch('/media_seek?delta=' + encodeURIComponent(deltaSec), {
         method: 'GET',
-        cache: 'no-cache'
-      }).catch(err => {
-        showToast('连接失败，请检查电脑是否在线');
-      });
+        cache: 'no-store'
+      })
+        .then(res => res.json())
+        .then(data => {
+          setConnectionOnline(true);
+          if (data.ok) {
+            showToast((deltaSec >= 0 ? '⏩ ' : '⏪ ') + (data.message || '已调整进度'));
+            if (typeof data.position === 'number' && data.duration > 0.5) {
+              positionSec = data.position;
+              durationSec = data.duration;
+              lastSyncMs = Date.now();
+              updateSliderVisual(positionSec, durationSec);
+            }
+          } else {
+            showToast(data.message || '当前播放器暂不支持快进/快退');
+            ignorePositionUntil = 0;
+            pollMediaStatus(true);
+          }
+        })
+        .catch(() => {
+          setConnectionOnline(false);
+          showToast('连接失败，请检查电脑是否在线');
+        });
     }
+
+    // 监听进度条拖拽交互
+    sliderEl.addEventListener('pointerdown', () => { isSeeking = true; });
+    sliderEl.addEventListener('touchstart', () => { isSeeking = true; }, { passive: true });
+
+    sliderEl.addEventListener('input', () => {
+      isSeeking = true;
+      if (durationSec > 0.5) {
+        const previewSec = (Number(sliderEl.value) / 1000) * durationSec;
+        updateSliderVisual(previewSec, durationSec);
+      }
+    });
+
+    sliderEl.addEventListener('change', () => {
+      isSeeking = false;
+      if (durationSec > 0.5) {
+        const targetSec = (Number(sliderEl.value) / 1000) * durationSec;
+        commitSeek(targetSec);
+      }
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (isSeeking) isSeeking = false;
+    });
+
+    // 同步浏览器系统媒体信息（支持时自动展示）
+    function syncBrowserMediaSession(data) {
+      if (!('mediaSession' in navigator)) return;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: data.title || '多媒体遥控器',
+          artist: data.artist || (data.app ? data.app + ' · PC 远程控制' : 'PC 远程控制'),
+          album: data.album || ''
+        });
+        navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+      } catch (e) {}
+    }
+
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.setActionHandler('play', () => togglePlayPause());
+        navigator.mediaSession.setActionHandler('pause', () => togglePlayPause());
+        navigator.mediaSession.setActionHandler('previoustrack', () => handleStepSong('prev_song', '⏮ 上一首'));
+        navigator.mediaSession.setActionHandler('nexttrack', () => handleStepSong('next_song', '⏭ 下一首'));
+        navigator.mediaSession.setActionHandler('seekto', details => {
+          if (details && typeof details.seekTime === 'number') {
+            commitSeek(details.seekTime);
+          }
+        });
+      } catch (e) {}
+    }
+
+    // 轮询 PC 媒体状态
+    function pollMediaStatus(force) {
+      if (pollInFlight && !force) return;
+      pollInFlight = true;
+      fetch('/media_status' + (force ? '?force=1' : ''), {
+        method: 'GET',
+        cache: 'no-store'
+      })
+        .then(res => res.json())
+        .then(data => {
+          setConnectionOnline(true);
+          const now = Date.now();
+
+          if (data.available) {
+            currentTrackTitle = data.title || '';
+            songTitleEl.innerText = data.title || '正在播放媒体';
+            songArtistEl.innerText = data.artist || (isPlaying ? '正在播放中' : '已暂停');
+            appChipEl.innerText = data.app || 'PC 媒体';
+
+            if (now >= ignorePlayStateUntil) {
+              isPlaying = Boolean(data.is_playing);
+              updatePlayPauseUI();
+            }
+            if (now >= ignoreLikeStateUntil && typeof data.is_liked === 'boolean') {
+              isLiked = data.is_liked;
+              updateLikeUI();
+            }
+
+            hasTimeline = Boolean(data.has_timeline) && Number(data.duration) > 0.5;
+            playbackRate = Number(data.playback_rate) || 1.0;
+
+            if (hasTimeline) {
+              durationSec = Number(data.duration);
+              timelineHintEl.innerText = data.like_source === 'cdp'
+                ? '已直连网易云 CDP · 进度拖动与红心状态实时同步'
+                : (data.cdp_connected ? '已直连网易云 CDP · 支持进度条拖动' : '');
+              if (!isSeeking && now >= ignorePositionUntil) {
+                positionSec = Number(data.position) || 0;
+                lastSyncMs = now;
+                updateSliderVisual(positionSec, durationSec);
+              }
+            } else {
+              durationSec = 0;
+              positionSec = 0;
+              if (!isSeeking) {
+                updateSliderVisual(0, 0);
+              }
+              timelineHintEl.innerText = data.cdp_hint || '当前播放器未开放系统进度条，快捷键控制正常生效';
+            }
+            syncBrowserMediaSession(data);
+          } else {
+            currentTrackTitle = '';
+            songTitleEl.innerText = '等待播放器就绪';
+            songArtistEl.innerText = isPlaying ? '🎵 播放指令已发送' : '请先在电脑打开网易云等音乐软件';
+            appChipEl.innerText = '待机中';
+            if (now >= ignoreLikeStateUntil && typeof data.is_liked === 'boolean') {
+              isLiked = data.is_liked;
+              updateLikeUI();
+            }
+            hasTimeline = false;
+            durationSec = 0;
+            if (!isSeeking) {
+              updateSliderVisual(0, 0);
+            }
+            timelineHintEl.innerText = '未检测到活动媒体会话，可直接点击按钮遥控';
+          }
+        })
+        .catch(() => {
+          setConnectionOnline(false);
+        })
+        .finally(() => {
+          pollInFlight = false;
+        });
+    }
+
+    // 本地平滑推进进度条（每 500ms）
+    setInterval(() => {
+      if (isPlaying && hasTimeline && durationSec > 0.5 && !isSeeking) {
+        updateSliderVisual(getLivePosition(), durationSec);
+      }
+    }, 500);
+
+    // 定期同步 PC 真实媒体状态（每 2 秒）
+    setInterval(() => {
+      if (!document.hidden) {
+        pollMediaStatus(false);
+      }
+    }, 2000);
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        pollMediaStatus(true);
+      }
+    });
+
+    // 桌面浏览器键盘快捷键支持 (Ctrl + Alt + L / Esc 关闭弹窗)
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeUnlikeModal();
+        closeShutdownModal();
+        return;
+      }
+      if (e.ctrlKey && e.altKey && (e.key === 'l' || e.key === 'L')) {
+        e.preventDefault();
+        likeSong();
+      }
+    });
 
     function showToast(text) {
       const toast = document.getElementById('toast');
@@ -594,7 +1255,7 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         toast.classList.remove('show');
-      }, 1800);
+      }, 1900);
     }
 
     // 关机防误触模态框
@@ -608,8 +1269,11 @@
 
     function confirmShutdown() {
       closeShutdownModal();
-      sendAction('shutdown', '⛔ 电脑将在 5 秒后关机...');
+      sendAction('shutdown', '⛔ 电脑将在 5 秒后关机...', false);
     }
+
+    // 页面首次打开立即同步一次状态
+    pollMediaStatus(true);
   </script>
 </body>
 </html>

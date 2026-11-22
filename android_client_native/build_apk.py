@@ -6,7 +6,20 @@ import shutil
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-TOOLS_DIR = r"..\..\android_build_tools"
+def find_tools_dir():
+    candidates = [
+        os.environ.get("ANDROID_BUILD_TOOLS", "").strip(),
+        r"F:\Android SDK",
+        r"..\..\android_build_tools",
+    ]
+    for d in candidates:
+        if d and os.path.exists(os.path.join(d, "aapt2.exe")) and os.path.exists(os.path.join(d, "android.jar")):
+            return d
+    return r"F:\Android SDK"
+
+
+TOOLS_DIR = find_tools_dir()
+print(f"Using Android build tools dir: {TOOLS_DIR}")
 
 AAPT2 = os.path.join(TOOLS_DIR, "aapt2.exe")
 ANDROID_JAR = os.path.join(TOOLS_DIR, "android.jar")
@@ -17,6 +30,10 @@ BUILD_DIR = "build"
 GEN_DIR = os.path.join(BUILD_DIR, "gen")
 BIN_DIR = os.path.join(BUILD_DIR, "bin")
 
+if os.path.exists(GEN_DIR):
+    shutil.rmtree(GEN_DIR)
+if os.path.exists(BIN_DIR):
+    shutil.rmtree(BIN_DIR)
 os.makedirs(GEN_DIR, exist_ok=True)
 os.makedirs(BIN_DIR, exist_ok=True)
 
@@ -44,9 +61,12 @@ cmd_link = [
 print("Running:", " ".join(cmd_link))
 subprocess.run(cmd_link, check=True)
 
-print("\n=== [3/6] JAVAC 编译 Java 代码 ===")
-r_java = os.path.join(GEN_DIR, "com", "naiveclient", "R.java")
-main_java = os.path.join("src", "com", "naiveclient", "MainActivity.java")
+print("\n=== [3/6] JAVAC 编译全部 Java 源码 ===")
+java_files = [os.path.join(GEN_DIR, "com", "naiveclient", "R.java")]
+for root, dirs, files in os.walk("src"):
+    for f in sorted(files):
+        if f.endswith(".java"):
+            java_files.append(os.path.join(root, f))
 
 cmd_javac = [
     "javac",
@@ -54,8 +74,7 @@ cmd_javac = [
     "-cp", ANDROID_JAR,
     "-d", BIN_DIR,
     "--release", "8",
-    r_java, main_java
-]
+] + java_files
 print("Running:", " ".join(cmd_javac))
 subprocess.run(cmd_javac, check=True)
 
@@ -100,7 +119,6 @@ if not os.path.exists(keystore):
     print("Generating keystore...")
     subprocess.run(cmd_genkey, check=True)
 
-# 编译并运行官方 ApkSigner 辅助类
 signer_java_content = """
 import com.android.apksig.ApkSigner;
 import java.io.File;

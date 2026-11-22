@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="18dp">
 
         <!-- 顶部标题与连接状态栏 -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="14dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:textColor="@color/text_primary"
-                    android:textSize="24sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -67,7 +67,7 @@
             android:orientation="horizontal"
             android:padding="12dp"
             android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="14dp">
 
             <EditText
                 android:id="@+id/et_server_ip"
@@ -96,83 +96,246 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <!-- 正在播放与播放进度条控制卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toLeftOf="@+id/tv_song_app"
+                    android:layout_toStartOf="@+id/tv_song_app"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_song_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="等待同步播放信息"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:id="@+id/tv_song_artist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="连接电脑后自动同步歌名与播放进度"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_song_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_badge_disconnected"
+                    android:text="PC 媒体"
+                    android:textColor="@color/text_accent"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seek_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="18dp"
+                android:maxHeight="18dp"
+                android:max="1000"
+                android:progress="0"
+                android:progressDrawable="@drawable/seekbar_progress"
+                android:thumb="@drawable/seekbar_thumb"
+                android:splitTrack="false"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tv_time_current"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="--:--"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_seek_back"
+                        android:layout_width="64dp"
+                        android:layout_height="28dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_btn_pill"
+                        android:text="@string/btn_seek_back"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:padding="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_seek_forward"
+                        android:layout_width="64dp"
+                        android:layout_height="28dp"
+                        android:background="@drawable/bg_btn_pill"
+                        android:text="@string/btn_seek_forward"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:padding="0dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_time_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="--:--"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_timeline_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="支持拖动进度条与 ±10s 快进快退"
+                android:textColor="#64748B"
+                android:textSize="11sp" />
+        </LinearLayout>
+
         <!-- 切歌控制：上一首 / 下一首 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="10dp">
 
             <Button
                 android:id="@+id/btn_prev"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:layout_marginRight="6dp"
                 android:layout_marginEnd="6dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="@string/btn_prev"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_next"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="6dp"
                 android:layout_marginStart="6dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="@string/btn_next"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- 播放 / 暂停 大按键 (视觉焦点) -->
+        <!-- 播放 / 暂停 大按键 -->
         <Button
             android:id="@+id/btn_play_pause"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="66dp"
             android:background="@drawable/bg_btn_play"
             android:text="@string/btn_play_pause"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="19sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="10dp" />
 
-        <!-- 音量控制：音量 - / 音量 + -->
+        <!-- 音量与喜欢控制：音量 - / 喜欢 / 音量 + -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="10dp">
 
             <Button
                 android:id="@+id/btn_vol_down"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="54dp"
                 android:layout_weight="1"
-                android:layout_marginRight="6dp"
-                android:layout_marginEnd="6dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="@string/btn_vol_down"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_like"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/bg_btn_like"
+                android:text="@string/btn_like"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_vol_up"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="54dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                android:layout_marginStart="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="@string/btn_vol_up"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -181,33 +344,91 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="14dp">
 
             <Button
                 android:id="@+id/btn_sleep"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:layout_marginRight="6dp"
                 android:layout_marginEnd="6dp"
                 android:background="@drawable/bg_btn_sleep"
                 android:text="@string/btn_sleep"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_shutdown"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="6dp"
                 android:layout_marginStart="6dp"
                 android:background="@drawable/bg_btn_danger"
                 android:text="@string/btn_shutdown"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 锁屏界面与状态栏媒体控制开关卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toLeftOf="@+id/switch_media_control"
+                    android:layout_toStartOf="@+id/switch_media_control"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/media_control_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/media_control_desc"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/switch_media_control"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_media_service_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="状态: 连接电脑后自动开启状态栏与锁屏控制"
+                android:textColor="@color/text_accent"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- 详细信息卡片 -->
@@ -216,8 +437,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_card"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -226,7 +447,7 @@
                 android:textColor="@color/text_accent"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="6dp" />
 
             <TextView
                 android:id="@+id/tv_info_connection"
@@ -234,36 +455,36 @@
                 android:layout_height="wrap_content"
                 android:text="运行状态: 等待连接电脑..."
                 android:textColor="@color/text_secondary"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:layout_marginBottom="4dp" />
 
             <TextView
                 android:id="@+id/tv_info_platform"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="控制目标: Windows 电脑 (网易云/QQ音乐/PPT)"
+                android:text="控制目标: Windows 电脑 (网易云/QQ音乐/Spotify)"
                 android:textColor="@color/text_secondary"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:layout_marginBottom="4dp" />
 
             <TextView
                 android:id="@+id/tv_info_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提示: 手机与电脑需连接在同一局域网 WiFi"
+                android:text="快捷键: 喜欢 Ctrl+Alt+L · 播放/暂停 Ctrl+Alt+P · 进度同步 Windows SMTC"
                 android:textColor="#64748B"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="极速轻量原生版 · 绝无闪退 · 全架构兼容"
+            android:text="极速轻量原生版 v1.3 · 支持锁屏/状态栏/喜欢/进度条"
             android:textColor="#475569"
-            android:textSize="12sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp" />
+            android:textSize="11sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="14dp" />
 
     </LinearLayout>
 </ScrollView>

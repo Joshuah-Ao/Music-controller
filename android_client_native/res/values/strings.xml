@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">音乐遥控器</string>
-    <string name="header_subtitle">PC 多媒体与播放器局域网遥控端</string>
+    <string name="header_subtitle">PC 多媒体与播放器局域网遥控端 · v1.3</string>
     <string name="hint_ip">电脑 IP 与端口 (如 192.168.1.5:10010)</string>
     <string name="btn_connect">连接</string>
     <string name="status_connected">● 已连接</string>
@@ -10,12 +10,21 @@
     <string name="btn_next">⏭ 下一首</string>
     <string name="btn_play_pause">⏯ 播放 / 暂停</string>
     <string name="btn_vol_down">🔉 音量 -</string>
+    <string name="btn_like">🤍 喜欢</string>
+    <string name="btn_liked">❤️ 已喜欢</string>
     <string name="btn_vol_up">🔊 音量 +</string>
+    <string name="btn_seek_back">↺ 10s</string>
+    <string name="btn_seek_forward">10s ↻</string>
     <string name="btn_sleep">🌙 一键睡眠</string>
     <string name="btn_shutdown">⛔ 安全关机</string>
+    <string name="media_control_title">🔔 锁屏与状态栏控制</string>
+    <string name="media_control_desc">开启后可在手机状态栏和锁屏界面直接切歌、喜欢与拖动进度条</string>
     <string name="card_title">连接状态与快捷键</string>
     <string name="dialog_sleep_title">一键睡眠确认</string>
     <string name="dialog_sleep_msg">确认让电脑进入睡眠模式吗？</string>
+    <string name="dialog_unlike_title">取消喜欢确认</string>
+    <string name="dialog_unlike_msg">当前歌曲已标记为喜欢，确认发送 Ctrl + Alt + L 取消喜欢吗？</string>
+    <string name="dialog_unlike_ok">确认取消喜欢</string>
     <string name="dialog_shutdown_title">安全关机确认</string>
     <string name="dialog_shutdown_msg">确认要关闭电脑吗？电脑将在 5 秒后切断电源。</string>
     <string name="dialog_ok">确定</string>
